@@ -24,6 +24,11 @@ import {
 } from "lucide-react";
 import ReactPlayer from "react-player";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+
 // Dynamically import components
 import { App } from "../components/App";
 const Intelligence = dynamic(() => import("../components/Intelligence"), { ssr: false });
@@ -87,6 +92,11 @@ export default function Home() {
   const toggleConversation = () => setConversationOpen(!conversationOpen);
 
   const has4ConversationMessages = messages.filter(isConversationMessage).length > 3;
+
+  // const handleMouseLeave = () => {
+  //   setHoveredIndex(null);
+  // };
+  const swiperRef = useRef(null);
 
   const industries = [
     {
@@ -562,31 +572,33 @@ export default function Home() {
           Ready-to-Use AI Agents <br /> Tailored for Your Industry
         </p>
 
-        <div className="mb-12 relative">
-          {/* Left Navigation Button */}
-          <button
-            onClick={() => scroll("left")}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-gray-800 hover:bg-gray-700 rounded-full p-2"
-            aria-label="Scroll left"
-          >
-            <ChevronLeft className="w-6 h-6 text-white" />
-          </button>
-
-          {/* Carousel Container */}
-          <div
-            ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4 justify-center"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {industries.map((industry, index) => (
-              <div key={index} className="flex-none" style={{ width: "300px" }}>
+        <Swiper
+          slidesPerView={1.2}
+          spaceBetween={10}
+          breakpoints={{
+            640: { slidesPerView: 1.2, spaceBetween: 10 },
+            1024: { slidesPerView: 4, spaceBetween: 10 },
+          }}
+          modules={[Navigation]}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          navigation={{
+            nextEl: ".custom-swiper-button-next",
+            prevEl: ".custom-swiper-button-prev",
+          }}
+        >
+          {industries.map((industry, index) => (
+            <SwiperSlide
+              key={index}
+              // className="bg-gray-800 p-[1px] rounded-[24px] md:rounded-[48px] relative border-2 border-transparent before:absolute before:inset-0 before:rounded-[24px] md:before:rounded-[48px] before:border-2 before:border-transparent before:bg-gradient-to-b before:from-[#FFA0FF] before:to-[#FFCEA0] before:-z-10"
+            >
+              <div key={index} className="flex-none" style={{ width: isMobile ? "auto" : "320px" }}>
                 <div className="bg-gray-900 rounded-[24px] border-2 border-[#262626] h-full">
                   <div className="p-4 h-24">
                     <h3 className="text-white text-xl font-semibold mb-2">{industry.name}</h3>
                     <p className="text-gray-300 text-sm">{industry.description}</p>
                   </div>
                   <div
-                    className="relative h-96 overflow-hidden rounded-b-[24px]"
+                    className="relative h-80 md:h-[410px] overflow-hidden rounded-b-[24px]"
                     onMouseEnter={() => handleMouseEnter(index)}
                     onMouseLeave={() => handleMouseLeave(index)}
                   >
@@ -614,20 +626,33 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ))}
+            </SwiperSlide>
+          ))}
+
+          {/* Navigation Buttons */}
+          <div className=" md:flex justify-between mt-4" style={{ zIndex: 99 }}>
+            <div className="left-shadow">
+              <button
+                // className="custom-swiper-button-prev bg-white absolute top-1/2 left-1 transform -translate-y-1/2 w-12 h-12 flex items-center justify-center text-black rounded-full transition"
+                className="custom-swiper-button-prev absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-gray-800 hover:bg-gray-700 rounded-full p-2"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-6 h-6 text-white" />
+              </button>
+            </div>
+            <div className="right-shadow">
+              <button
+                // className="custom-swiper-button-next bg-white absolute top-1/2 right-1 transform -translate-y-1/2 w-12 h-12 flex items-center justify-center text-black rounded-full transition"
+                className="custom-swiper-button-next absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-gray-800 hover:bg-gray-700 rounded-full p-2"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-6 h-6 text-white" />
+              </button>
+            </div>
           </div>
+        </Swiper>
 
-          {/* Right Navigation Button */}
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-gray-800 hover:bg-gray-700 rounded-full p-2"
-            aria-label="Scroll right"
-          >
-            <ChevronRight className="w-6 h-6 text-white" />
-          </button>
-        </div>
-
-        <h2 className="text-3xl font-bold mb-6">Key Features</h2>
+        <h2 className="text-3xl font-bold my-6">Key Features</h2>
         <p className="text-xl mb-8">
           What Makes Our AI Voice <br /> Tech Stand Out
         </p>
