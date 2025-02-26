@@ -29,6 +29,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
+import { Swiper as SwiperClass } from "swiper";
+
 // Dynamically import components
 import { App } from "../components/App";
 const Intelligence = dynamic(() => import("../components/Intelligence"), { ssr: false });
@@ -96,7 +98,9 @@ export default function Home() {
   // const handleMouseLeave = () => {
   //   setHoveredIndex(null);
   // };
-  const swiperRef = useRef(null);
+
+  // const swiperRef = useRef(null);
+  const swiperRef = useRef<SwiperClass | null>(null);
 
   const industries = [
     {
@@ -580,7 +584,9 @@ export default function Home() {
             1024: { slidesPerView: 4, spaceBetween: 10 },
           }}
           modules={[Navigation]}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper; // No optional chaining needed
+          }}
           navigation={{
             nextEl: ".custom-swiper-button-next",
             prevEl: ".custom-swiper-button-prev",
