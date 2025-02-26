@@ -34,7 +34,7 @@ import { Swiper as SwiperClass } from "swiper";
 // Dynamically import components
 import { App } from "../components/App";
 const Intelligence = dynamic(() => import("../components/Intelligence"), { ssr: false });
-const PromptSuggestions = dynamic(() => import("../components/PromptSuggestions"), { ssr: false });
+// const PromptSuggestions = dynamic(() => import("../components/PromptSuggestions"), { ssr: false });
 const Conversation = dynamic(() => import("../components/Conversation"), { ssr: false });
 const VoiceSelector = dynamic(() => import("../components/VoiceSelector/VoiceSelector"), {
   ssr: false,
@@ -480,14 +480,14 @@ export default function Home() {
                       {/* Desktop */}
                       <div className="hidden md:flex justify-center text-gray-450">Try saying:</div>
                       <div className="hidden md:grid max-w-max mx-auto grid-cols-3 gap-4 mt-6 relative">
-                        <PromptSuggestions />
+                        {/* <PromptSuggestions /> */}
                       </div>
                       {/* Mobile */}
                       <div className="flex md:hidden justify-center text-gray-450 mt-2">
                         Try saying:
                       </div>
                       <div className="scrollable-element w-full flex md:hidden gap-4 items-center mt-4 overflow-x-auto -mr-10">
-                        <PromptSuggestions />
+                        {/* <PromptSuggestions /> */}
                       </div>
                     </div>
                   )}
